@@ -3,7 +3,10 @@
   {
     $CI =& get_instance();
     $CI->load->model(array('lampu_model','sarpras_model','jalan_model','rambu_model','delinator_model'));
-    // Iterate through the rows, adding XML nodes for each
+    /*
+    	lineString => jalan
+    	marker => lampu,sarpras,rambu,delinator
+    */
 		// Creates the Document.
 		$dom = new DOMDocument('1.0', 'UTF-8');
 		// Creates the root KML element and appends it to the root document.
@@ -23,20 +26,7 @@
 		$lineStyle->appendChild($width);
 		$restStyleNode->appendChild($lineStyle);
 		$docNode->appendChild($restStyleNode);
-		// Creates the two Style elements, one for restaurant and one for bar, and append the elements to the Document element.
-		// $alljenjang=$this->db->get('ref_jenjang')->result_array();
-		// foreach ($alljenjang as $data) {
-		// 	$restStyleNode = $dom->createElement('Style');
-		// 	$restStyleNode->setAttribute('id', "jenjang".$data['k_jenjang']);
-		// 	$restIconstyleNode = $dom->createElement('IconStyle');
-		// 	// $restIconstyleNode->setAttribute('id', "jenjang".$data['k_jenjang']."Style");
-		// 	$restIconNode = $dom->createElement('Icon');
-		// 	$restHref = $dom->createElement('href', base_url("libs/geoxml3-master/icon")."/".$data['k_jenjang'].".png");
-		// 	$restIconNode->appendChild($restHref);
-		// 	$restIconstyleNode->appendChild($restIconNode);
-		// 	$restStyleNode->appendChild($restIconstyleNode);
-		// 	$docNode->appendChild($restStyleNode);
-		// }
+		
 
 		// Iterates through the MySQL results, creating one Placemark for each row.
 		$jalan=$CI->jalan_model->get()->result_array();
@@ -178,11 +168,7 @@
 		  $coorNode = $dom->createElement('coordinates', $coorStr);
 		  $pointNode->appendChild($coorNode);
 		}
-		// $kmlOutput = $dom->saveXML();
-		// $dom->save("/upload/tester.kml");
-		// header('Content-type: application/vnd.google-earth.kml+xml');
 		$dom->save("upload/getKML.kml");
-		// print_r(simplexml_load_file("upload/getKML.kml"));
   }
 
 ?>
